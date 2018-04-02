@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>hangge.com</title>
+
+    <style>
+        body {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 14px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        
+        form {
+            margin-bottom: 30px;
+        }
+        
+        fieldset {
+            margin-bottom: 15px;
+            padding: 10px;
+            max-width: 500px;
+        }
+        
+        legend {
+            padding: 0px 3px;
+            font-weight: bold;
+        }
+        
+        label {
+            width: 125px;
+            display: inline-block;
+            vertical-align: top;
+            margin: 6px;
+        }
+        
+        input:focus {
+            background: #eaeaea;
+        }
+        
+        input {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            width: 300px;
+        }
+        
+        textarea {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            height: 100px;
+            width: 500px;
+        }
+        
+        input[type=button] {
+            width: 150px;
+            padding: 8px;
+        }
+        
+        div.resultBox {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #D8EEFE;
+            border-radius: 15px;
+            max-width: 500px;
+        }
+        
+        .linkButton {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        var database;
+
+        window.onload = function() {
+            var request = window.indexedDB.open("local", 1);
+
+            request.onsuccess = function(event) {
+                // alert("创建/打开数据库成功。");
+
+                //让数据库 可在任何地方访问
+                database = request.result;
+
+                //显示数据库中保存的所有链接
+                showLinks();
+            };
+
+            request.onerror = function(event) {
+                alert("发生错误：" + request.error);
+            };
+
+            request.onupgradeneeded = function(event) {
+                // alert("第一次创建数据库或者更新数据库。");
+                //alert("数据库老版本为：" + event.oldVersion + " 更新后新版本为：" + event.newVersion)
+
+                var db = request.result;
+                var objectStore = db.createObjectStore("Links", {
+                    keyPath: "url"
+                });
+            }
+        };
+
+        function addLink() {
+            //从form表单中获取数据
+            var name = document.getElementById("name").value;
+            var url = document.getElementById("url").value;
+            var description = document.getElementById("description").value;
+
+            var linkRecord = new LinkRecord(name, url, description);
+
+            var transaction = database.transaction(["Links"], "readwrite");
+            var objectStore = transaction.objectStore("Links");
+
+            var request = objectStore.put(linkRecord);
+            request.onerror = function(event) {
+                alert("发生错误：" + request.error);
+            };
+
+            request.onsuccess = function(event) {
+                alert("添加链接成功");
+
+                //显示数据库中保存的所有链接
+                showLinks();
+            };
+        }
+
+        function showLinks() {
+            var transaction = database.transaction(["Links"], "readonly");
+            var objectStore = transaction.objectStore("Links");
+
+            var request = objectStore.openCursor();
+
+            request.onerror = function(event) {
+                alert("发生错误：" + request.error);
+            };
+
+            //要在页面上显示的字符串
+            var markupToInsert = "";
+
+            request.onsuccess = function(event) {
+                //创建一个游标
+                var cursor = event.target.result;
+
+                //根据游标判断是否有数据
+                if (cursor) {
+                    var linkRecord = cursor.value;
+                    markupToInsert += "<a href=" + linkRecord.url + ">" + linkRecord.name + "</a> (" +
+                        "<span class='linkButton' data-url='" + linkRecord.url +
+                        "' onclick='getLinkDetails(this)'>详细</span>" + " " +
+                        "<span class='linkButton' data-url='" + linkRecord.url +
+                        "' onclick='deleteLink(this)'>删除</span>" +
+                        ")<br>";
+
+                    //调用cursor.continue()方法访问下一条数据
+                    //当游标到达下一条数据时，onsuccess事件会再一次触发
+                    cursor.continue();
+                } else {
+                    ////如果一个结果也没有，说明游标到底了，输出信息
+                    if (markupToInsert == "") {
+                        markupToInsert = "<< 暂无链接。 >>";
+                    } else {
+                        markupToInsert = "<i>目前添加的链接如下: </i><br>" + markupToInsert;
+                    }
+
+                    //显示数据
+                    var resultsElement = document.getElementById("links");
+                    resultsElement.innerHTML = markupToInsert;
+
+                }
+            };
+        }
+
+        function getLinkDetails(element) {
+            var url = element.getAttribute("data-url");
+
+            var transaction = database.transaction(["Links"], "readonly");
+            var objectStore = transaction.objectStore("Links");
+
+            var request = objectStore.get(url);
+
+            request.onerror = function(event) {
+                alert("发生错误：" + request.error);
+            };
+
+            request.onsuccess = function(event) {
+                alert("数据获取成功");
+                var linkRecord = request.result;
+
+                var resultsElement = document.getElementById("linkDetails");
+                resultsElement.innerHTML = "<b>" + linkRecord.name + "</b><br>" +
+                    "<b>URL:</b> " + linkRecord.url + "<br>" +
+                    "<b>描述:</b> " + linkRecord.description;
+            }
+        }
+
+        function deleteLink(element) {
+            var url = element.getAttribute("data-url");
+
+            var transaction = database.transaction(["Links"], "readwrite");
+            var objectStore = transaction.objectStore("Links");
+
+            var request = objectStore.delete(url);
+
+            request.onerror = function(event) {
+                alert("发生错误：" + request.error);
+            };
+
+            request.onsuccess = function(event) {
+                alert("删除成功");
+
+                //显示数据库中保存的所有链接
+                showLinks();
+            }
+        }
+
+        function LinkRecord(name, url, description) {
+            this.name = name;
+            this.url = url;
+            this.description = description;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>网址收藏夹</h1>
+    <form action="#">
+        <fieldset>
+            <legend>详细信息</legend>
+            <label for="name">名称:</label>
+            <input id="name" placeholder="Some website"><br>
+            <label for="url">URL地址:</label>
+            <input id="url" placeholder="http://somesite.somedomain.com"><br>
+            <label for="Description">描述:</label>
+            <input id="description" placeholder="A site about something"><br>
+        </fieldset>
+        <div><input type="button" value="新增链接" onclick="addLink()">
+            <input type="button" value="显示所有链接" onclick="showLinks()"></div>
+    </form>
+
+    <div class="resultBox" id="links">
+        &nbsp;
+    </div>
+
+    <div class="resultBox" id="linkDetails">
+        &nbsp;
+    </div>
+
+</body>
+
+</html>

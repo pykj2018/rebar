@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/component.css">
+    <script src="./js/plug/jquery.js"></script>
+    <title>数据录入页</title>
+</head>
+
+<body>
+    <div class="content">
+        <!-- list -->
+        <div class="list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>直径</th>
+                        <th>图形</th>
+                        <th>开料长度</th>
+                        <th>条数</th>
+                        <th>功能</th>
+                        <!-- <th>添加</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td class="orderNumber"></td>
+                        <td class="diameter "></td>
+                        <td class="graph"><img src="./images/1.jpg" alt=""></td>
+                        <td class="length"></td>
+                        <td class="branches "></td>
+                        <td class="del"><input type="button" value="删除"></td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <!-- entering -->
+        <div class="entering">
+            <form action="">
+                <p><span>序　　号:</span> <input type="text" value="1" name="orderNumber" disabled/></p>
+                <p><span>直　　径:</span>
+                    <select name="diameter">
+                        <option value="">6</option>
+                        <option value="">8</option>
+                        <option value="">10</option>
+                        <option value="">12</option>
+                        <option value="">14</option>
+                        <option value="">16</option>
+                        <option value="">18</option>
+                        <option value="">20</option>
+                        <option value="">22</option>
+                        <option value="">25</option>
+                    </select>
+                </p>
+                <div class="graphical">
+                    <span>图　　形:</span>
+                    <div id="select">
+                        <span>选择图形</span>
+                        <!-- <ul class="option">
+                            <li value="1"><img src="./images/1.jpg" alt=""></li>
+                        </ul> -->
+                    </div>
+                </div>
+                <p><span>开料长度:</span> <input type="text" name="length" disabled/></p>
+                <p><span>条　　数:</span> <input type="number" name="branches" /></p>
+                <p><input type="button" value="确定" class="confirm"></p>
+                <p>
+                    <a href="./print.html" target="blank">生成打印页</a>
+                    <!-- <input type="button" value="生成打印页" class="generate"> -->
+                </p>
+            </form>
+            <!-- 右侧图形选择区 -->
+            <div class="commponent-wrap">
+                <!-- 组件1 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c1" id="draggable1">
+                        <div class="de hid">1.</div>
+                        <img src="images/1.jpg" alt="形状1">
+                        <input class="c1-i1" type="text" min="0">
+                        <input class="c1-i2" type="text" min="0">
+                        <input class="c1-i3" type="text" min="0">
+                        <input class="c1-i4" type="text" min="0">
+                        <input class="c1-i5" type="text" min="0">
+                        <input class="c1-i6" type="text" min="0">
+                        <input class="c1-i7" type="text" min="0">
+                        <input class="c1-i8" type="text" min="0">
+                        <input class="c1-i9" type="text" min="0">
+                    </div>
+                </div>
+                <!-- 组件2 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c2" id="draggable2">
+                        <div class="de hid">2.</div>
+                        <img src="images/2.jpg" alt="形状2">
+                        <input class="c2-i1" type="text" min="0">
+                        <input class="c2-i2" type="text" min="0">
+                        <input class="c2-i3" type="text" min="0">
+                        <input class="c2-i4" type="text" min="0">
+                        <input class="c2-i5" type="text" min="0">
+                        <input class="c2-i6" type="text" min="0">
+                    </div>
+                </div>
+                <!-- 组件3 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c3" id="draggable3">
+                        <div class="de hid">3.</div>
+                        <img src="images/3.jpg" alt="形状3">
+                        <input class="c3-i1" type="text" min="0">
+                        <input class="c3-i2" type="text" min="0">
+                        <input class="c3-i3" type="text" min="0">
+                        <input class="c3-i4" type="text" min="0">
+                        <input class="c3-i5" type="text" min="0">
+                    </div>
+                </div>
+                <!-- 组件4 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c4" id="draggable4">
+                        <div class="de hid">4.</div>
+                        <img src="images/4.jpg" alt="形状4">
+                        <input class="c4-i1" type="text" min="0">
+                        <input class="c4-i2" type="text" min="0">
+                        <input class="c4-i3" type="text" min="0">
+                        <input class="c4-i4" type="text" min="0">
+                        <input class="c4-i5" type="text" min="0">
+                        <input class="c4-i6" type="text" min="0">
+                        <input class="c4-i7" type="text" min="0">
+                    </div>
+                </div>
+                <!-- 组件5 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c5" id="draggable5">
+                        <div class="de hid">5.</div>
+                        <img src="images/5.jpg" alt="形状5">
+                        <input type="text" min="0" class="c5-i1">
+                        <input type="text" min="0" class="c5-i2">
+                        <input type="text" min="0" class="c5-i3">
+                        <input type="text" min="0" class="c5-i4">
+                        <input type="text" min="0" class="c5-i5">
+                    </div>
+                </div>
+                <!-- 组件6 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c6" id="draggable6">
+                        <div class="de hid">6.</div>
+                        <img src="images/6.jpg" alt="形状6">
+                        <input type="text" min="0" class="c6-i1">
+                        <input type="text" min="0" class="c6-i2">
+                        <input type="text" min="0" class="c6-i3">
+                        <input type="text" min="0" class="c6-i4">
+                    </div>
+                </div>
+                <!-- 组件7 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c7" id="draggable7">
+                        <div class="de hid">7.</div>
+                        <img src="images/7.jpg" alt="形状7">
+                        <input type="text" min="0" class="c7-i1">
+                        <input type="text" min="0" class="c7-i2">
+                    </div>
+                </div>
+                <!-- 组件8 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c8" id="draggable8">
+                        <div class="de hid">8.</div>
+                        <img src="images/8.jpg" alt="形状8">
+                        <input type="text" min="0" class="c8-i1">
+                        <input type="text" min="0" class="c8-i2">
+                        <input type="text" min="0" class="c8-i3">
+                    </div>
+                </div>
+                <!-- 组件9 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c9" id="draggable9">
+                        <div class="de hid">9.</div>
+                        <img src="images/9.jpg" alt="形状9">
+                        <input type="text" min="0" class="c9-i1">
+                        <input type="text" min="0" class="c9-i2">
+                        <input type="text" min="0" class="c9-i3">
+                    </div>
+                </div>
+                <!-- 组件10 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c10" id="draggable10">
+                        <div class="de hid">10.</div>
+                        <img src="images/10.jpg" alt="形状10">
+                        <input type="text" min="0" class="c10-i1">
+                    </div>
+                </div>
+                <!-- 组件11 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c11" id="draggable11">
+                        <div class="de hid">11.</div>
+                        <img src="images/11.jpg" alt="形状11">
+                        <input type="text" min="0" class="c11-i1">
+                        <input type="text" min="0" class="c11-i2">
+                        <input type="text" min="0" class="c11-i3">
+                        <input type="text" min="0" class="c11-i4">
+                        <input type="text" min="0" class="c11-i5">
+                    </div>
+                </div>
+                <!-- 组件12 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c12" id="draggable12">
+                        <div class="de hid">12.</div>
+                        <img src="images/12.jpg" alt="形状12">
+                        <input type="text" min="0" class="c12-i1">
+                        <input type="text" min="0" class="c12-i2">
+                        <input type="text" min="0" class="c12-i3">
+                        <input type="text" min="0" class="c12-i4">
+                        <input type="text" min="0" class="c12-i5">
+                    </div>
+                </div>
+                <!-- 组件13 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c13" id="draggable13">
+                        <div class="de hid">13.</div>
+                        <img src="images/13.jpg" alt="形状13">
+                        <input type="hidden" class="c13-i1" value="0.65">
+                    </div>
+                </div>
+                <!-- 组件14 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c14" id="draggable14">
+                        <div class="de hid">14.</div>
+                        <img src="images/14.jpg" alt="形状14">
+                        <input type="hidden" class="c14-i1" value="1.25">
+                    </div>
+                </div>
+                <!-- 组件15 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c15" id="draggable15">
+                        <div class="de hid">15.</div>
+                        <img src="images/15.jpg" alt="形状15">
+                        <input type="text" min="0" class="c15-i1">
+                        <input type="text" min="0" class="c15-i2">
+                        <input type="text" min="0" class="c15-i3">
+                    </div>
+                </div>
+                <!-- 组件16 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c16" id="draggable16">
+                        <div class="de hid">16.</div>
+                        <img src="images/16.jpg" alt="形状16">
+                        <input type="text" min="0" class="c16-i1">
+                        <input type="text" min="0" class="c16-i2">
+                        <input type="text" min="0" class="c16-i3">
+                        <input type="text" min="0" class="c16-i4">
+                    </div>
+                </div>
+                <!-- 组件17 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c17" id="draggable17">
+                        <div class="de hid">17.</div>
+                        <img src="images/17.jpg" alt="形状17">
+                        <input type="text" min="0" class="c17-i1">
+                        <input type="text" min="0" class="c17-i2">
+                        <input type="text" min="0" class="c17-i3">
+                        <input type="text" min="0" class="c17-i4">
+                    </div>
+                </div>
+                <!-- 组件18 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c18" id="draggable18">
+                        <div class="de hid">18.</div>
+                        <img src="images/18.jpg" alt="形状18">
+                        <input type="text" min="0" class="c18-i1">
+                        <input type="text" min="0" class="c18-i2">
+                        <input type="text" min="0" class="c18-i3">
+                        <input type="text" min="0" class="c18-i4">
+                    </div>
+                </div>
+                <!-- 组件19 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c19" id="draggable19">
+                        <div class="de hid">19.</div>
+                        <img src="images/19.jpg" alt="形状19">
+                        <input type="text" min="0" class="c19-i1">
+                        <input type="text" min="0" class="c19-i2">
+                        <input type="text" min="0" class="c19-i3">
+                        <input type="text" min="0" class="c19-i4">
+                    </div>
+                </div>
+                <!-- 组件20 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c20" id="draggable20">
+                        <div class="de hid">20.</div>
+                        <img src="images/20.jpg" alt="形状20">
+                        <input type="text" min="0" class="c20-i1">
+                        <input type="text" min="0" class="c20-i2">
+                        <input type="text" min="0" class="c20-i3">
+                        <input type="text" min="0" class="c20-i4">
+                    </div>
+                </div>
+                <!-- 组件21 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c21" id="draggable21">
+                        <div class="de hid">21.</div>
+                        <img src="images/21.jpg" alt="形状21">
+                        <input type="text" min="0" class="c21-i1">
+                        <input type="text" min="0" class="c21-i2">
+                        <input type="text" min="0" class="c21-i3">
+                        <input type="text" min="0" class="c21-i4">
+                    </div>
+                </div>
+                <!-- 组件22 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c22" id="draggable22">
+                        <div class="de hid">22.</div>
+                        <img src="images/22.jpg" alt="形状22">
+                        <input type="text" min="0" class="c22-i1">
+                        <input type="text" min="0" class="c22-i2">
+                        <input type="text" min="0" class="c22-i3">
+                        <input type="text" min="0" class="c22-i4">
+                    </div>
+                </div>
+                <!-- 组件23 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c23" id="draggable23">
+                        <div class="de hid">23.</div>
+                        <img src="images/23.jpg" alt="形状23">
+                        <input type="text" min="0" class="c23-i1">
+                        <input type="text" min="0" class="c23-i2">
+                        <input type="text" min="0" class="c23-i3">
+                        <!-- <input type="text" min="0" class="c23-i4"> -->
+                    </div>
+                </div>
+                <!-- 组件24 -->
+                <!-- <div class="all-c-wrap">
+                        <div class="all-c c24" id="draggable24">
+                            <div class="de hid">24.</div>
+                            <img src="images/24.jpg" alt="形状24">
+                        </div>
+                    </div> -->
+                <!-- 组件25 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c25" id="draggable25">
+                        <div class="de hid">25.</div>
+                        <img src="images/24.jpg" alt="形状25">
+                        <input type="text" min="0" class="c25-i1">
+                    </div>
+                </div>
+                <!-- 组件26 -->
+                <div class="all-c-wrap">
+                    <div class="all-c c26" id="draggable26">
+                        <div class="de hid">26.</div>
+                        <img src="images/25.jpg" alt="形状26">
+                        <input type="text" min="0" class="c26-i1">
+                        <input type="text" min="0" class="c26-i2">
+                        <input type="text" min="0" class="c26-i3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./js/index.js"></script>
+<script src="./js/indexDB.js"></script>
+<script>
+    // function del() {
+    //     alert(0)
+
+    // }
+</script>
+
+</html>

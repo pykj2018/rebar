@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/component.css">
+    <script src="./js/plug/jquery.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/indexDB.js"></script>
+    <title>打印页</title>
+    <style type="text/css" media="print">
+        .noprint {
+            display: none;
+        }
+        
+        .graph>div {
+            transform: scale(1) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="operation noprint">
+        <input type="button" value="打印" onclick="m_print()">
+    </div>
+    <!--startprint-->
+    <div id="printContent" class="content">
+        <div class="list list-left">
+            <table>
+                <thead>
+                    <tr>
+                        <th>直径</th>
+                        <th>图形</th>
+                        <th>开料长度</th>
+                        <th>条数</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="list list-right">
+            <table>
+                <thead>
+                    <tr>
+                        <th>直径</th>
+                        <th>图形</th>
+                        <th>开料长度</th>
+                        <th>条数</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!--endprint-->
+</body>
+<script>
+</script>
+
+</html>

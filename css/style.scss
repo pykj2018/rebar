@@ -1,0 +1,188 @@
+// common and reset
+html,
+body,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+.dis-inline {
+    display: inline;
+}
+
+.dis-inline-block {
+    display: inline-block !important;
+}
+
+.on {
+    display: inline-block !important;
+}
+
+.dis-none {
+    display: none;
+}
+
+.dis-flex {
+    display: flex;
+}
+
+// -->
+.content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    .list {
+        width: 40%;
+        margin: 2%;
+        .graph {
+            // display: block;
+            // padding: 0;
+            // border: none;
+            // margin: 40px auto;
+            // transform: scale(2);
+            padding: 30px 0;
+            >div {
+                width: 100px;
+                // height: 25px;
+                position: relative;
+                margin: 0 auto;
+                transform: scale(1.4);
+            }
+            img {
+                width: 100%;
+            }
+        }
+    }
+    .entering {
+        width: 50%;
+        display: flex;
+        border: 1px solid #000;
+        padding: 20px;
+        position: fixed;
+        right: 20px;
+        top: 40px;
+        margin: 0;
+        form {
+            width: 40%;
+            min-width: 300px;
+            p,
+            .graphical {
+                display: flex;
+                span {
+                    width: 100px;
+                    display: block;
+                }
+            }
+            input,
+            select,
+            #select {
+                margin-left: 10px;
+                width: 200px;
+                height: 30px;
+                border: 1px solid #000;
+                outline: none;
+                text-indent: 5px;
+                font-size: 20px;
+            }
+            select {
+                text-indent: 0;
+            }
+            .graphical {
+                #select {
+                    position: relative;
+                }
+                .option {
+                    width: 100%;
+                    height: auto;
+                    border: 1px solid #ACBABD;
+                    position: relative;
+                    left: -1px;
+                    top: 5px;
+                    display: none;
+                    li {
+                        color: #7da1bb;
+                        border-bottom: 1px solid #ACBABD;
+                        padding: 10px 0;
+                        background-color: #fff;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    li,
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .commponent-wrap {
+            width: 60%;
+            height: 400px;
+            overflow-y: scroll;
+            .all-c-wrap.active {
+                display: inline-block;
+                .all-c {
+                    display: inline-block;
+                    transform: scale(3) translateX(20%) translateY(50%);
+                    input {
+                        @extend .dis-none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+table {
+    width: 100%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    th,
+    td {
+        // padding: 10px;
+        text-align: center;
+        border: 1px solid #000;
+        border-collapse: collapse;
+    }
+    th {
+        width: 12%;
+        &:nth-child(3) {
+            width: 40%
+        }
+    }
+    tr {
+        height: 50px;
+    }
+}
+
+#printContent {
+    font-size: 12px;
+    .list {
+        width: 48%;
+        margin: 1%;
+        .graph {
+            padding: 20px 0;
+        }
+    }
+    table {
+        thead tr {
+            height: 30px;
+        }
+        th {
+            width: 12%;
+            &:nth-child(2) {
+                width: 40%
+            }
+        }
+        tbody tr {
+            height: 50px;
+        }
+    }
+}

@@ -2,6 +2,12 @@ var global = [];
 var printGlobal;
 // var orderNumber = global.length;
 $(document).ready(function() {
+    // // 页面加载完，清楚indexDB
+    // clearLink();
+
+    // 测试命令，上线删除
+    $(".all-c input").val('456456');
+
     // 图形选择显示逻辑
     $("#select").click(function() {
         $(".all-c-wrap").toggleClass('on').removeClass('active').find('input').hide();

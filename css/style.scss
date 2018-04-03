@@ -40,6 +40,7 @@ li {
     font-size: 20px;
     .list {
         width: 40%;
+        min-width: 600px;
         margin: 2%;
         .graph {
             // display: block;
@@ -47,22 +48,26 @@ li {
             // border: none;
             // margin: 40px auto;
             // transform: scale(2);
-            padding: 30px 0;
+            padding: 15px 0;
             >div {
                 width: 100px;
                 // height: 25px;
                 position: relative;
                 margin: 0 auto;
-                transform: scale(1.4);
+                display: inline-block;
+                transform: scale(1.5);
             }
             img {
                 width: 100%;
+                vertical-align: middle;
+                // height: 100%;
             }
         }
     }
     .entering {
         width: 50%;
-        display: flex;
+        min-width: 700px;
+        // display: flex;
         border: 1px solid #000;
         padding: 20px;
         position: fixed;
@@ -70,8 +75,29 @@ li {
         top: 40px;
         margin: 0;
         form {
-            width: 40%;
-            min-width: 300px;
+            // width: 40%;
+            // min-width: 300px;
+            .line {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+            }
+            .line-btn {
+                input,
+                a {
+                    width: 120px;
+                    height: 30px;
+                    line-height: 30px;
+                    margin: 0 10px;
+                    padding: 0;
+                    text-align: center;
+                    border: none;
+                    text-decoration: none;
+                    color: #000;
+                    background-color: #EBEBE4;
+                }
+            }
             p,
             .graphical {
                 display: flex;
@@ -86,6 +112,7 @@ li {
                 margin-left: 10px;
                 width: 200px;
                 height: 30px;
+                line-height: 30px;
                 border: 1px solid #000;
                 outline: none;
                 text-indent: 5px;
@@ -123,14 +150,15 @@ li {
             }
         }
         .commponent-wrap {
-            width: 60%;
+            // width: 60%;
             height: 400px;
             overflow-y: scroll;
             .all-c-wrap.active {
                 display: inline-block;
+                transform: scale(3) translateX(30%) translateY(70%);
                 .all-c {
-                    display: inline-block;
-                    transform: scale(3) translateX(20%) translateY(50%);
+                    margin: auto;
+                    // display: inline-block;
                     input {
                         @extend .dis-none;
                     }
@@ -163,13 +191,10 @@ table {
 }
 
 #printContent {
-    font-size: 12px;
+    font-size: 14px;
     .list {
         width: 48%;
         margin: 1%;
-        .graph {
-            padding: 20px 0;
-        }
     }
     table {
         thead tr {
@@ -183,6 +208,45 @@ table {
         }
         tbody tr {
             height: 50px;
+        }
+    }
+}
+
+@media screen and (max-width: 1700px) {
+    .content {
+        font-size: 16px;
+        .entering form {
+            input,
+            select,
+            #select {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .content {
+        font-size: 14px;
+        .entering form {
+            input,
+            select,
+            #select {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1250px) {
+    .content {
+        font-size: 12px;
+        .entering form {
+            input,
+            select,
+            #select {
+                font-size: 12px;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 var database;
 
 window.onload = function() {
+
     console.log(global)
     var request = window.indexedDB.open("localData", 1);
 
@@ -24,9 +25,9 @@ window.onload = function() {
 
         var db = request.result;
         var objectStore = db.createObjectStore("Links", {
-            // keyPath: "locGlobal.key",
-            keyPath: "id",
-            autoIncrement: true
+            keyPath: "global.orderNumber"
+                // keyPath: "id",
+                // autoIncrement: true
         });
     }
 };
@@ -34,26 +35,21 @@ window.onload = function() {
 function addLink() {
     // var request = dbObject.db.transaction(dbObject.db_store_name, "readwrite").objectStore(dbObject.db_store_name).clear();
 
-    var transaction = database.transaction(["Links"], "readwrite");
-    var objectStore = transaction.objectStore("Links");
-    var request = objectStore.clear();
-    request.onsuccess = function() {
-        console.log('清除成功');
-    }
+    console.log(global)
 
     //获取数据(逐条)
-    // var orderNumber = 'name';
-    // var diameter = "url";
-    // var graphical = "description";
-    // var length = "description";
-    // var branches = "description";
-    // var detailsKey = "description";
-    // var detailsValue = "description";
-    // var linkRecord = new LinkRecord(orderNumber, diameter, graphical, length, branches, detailsKey, detailsValue);
+    var orderNumber = global.orderNumber;
+    var diameter = global.diameter;
+    var graphical = global.graphical;
+    var length = global.length;
+    var branches = global.branches;
+    var detailsKey = global.detailsKey;
+    var detailsValue = global.detailsValue;
+    var linkRecord = new LinkRecord(orderNumber, diameter, graphical, length, branches, detailsKey, detailsValue);
 
     // 获取数据(整体)
-    var locGlobal = global;
-    var linkRecord = new LinkRecord(locGlobal);
+    // var locGlobal = global;
+    // var linkRecord = new LinkRecord(locGlobal);
 
     var transaction = database.transaction(["Links"], "readwrite");
     var objectStore = transaction.objectStore("Links");
@@ -97,6 +93,7 @@ function showLinks() {
             cursor.continue();
         } else {
             ////如果一个结果也没有，说明游标到底了，输出信息
+            return;
             console.log(printGlobal.locGlobal.length);
             var appendStr = ""; //tbody内总DOM
             var appendStr2 = ""; //tbody内总DOM
@@ -227,15 +224,24 @@ function deleteLink(element) {
     }
 }
 
-// function LinkRecord(orderNumber, diameter, graphical, length, branches, detailsKey, detailsValue) {
-//     this.orderNumber = orderNumber;
-//     this.diameter = diameter;
-//     this.graphical = graphical;
-//     this.length = length;
-//     this.branches = branches;
-//     this.detailsKey = detailsKey;
-//     this.detailsValue = detailsValue;
-// }
-function LinkRecord(locGlobal) {
-    this.locGlobal = locGlobal;
+function clearLink() {
+    var transaction = database.transaction(["Links"], "readwrite");
+    var objectStore = transaction.objectStore("Links");
+    var request = objectStore.clear();
+    request.onsuccess = function() {
+        console.log('清除成功');
+    }
 }
+
+function LinkRecord(orderNumber, diameter, graphical, length, branches, detailsKey, detailsValue) {
+    this.orderNumber = orderNumber;
+    this.diameter = diameter;
+    this.graphical = graphical;
+    this.length = length;
+    this.branches = branches;
+    this.detailsKey = detailsKey;
+    this.detailsValue = detailsValue;
+}
+// function LinkRecord(locGlobal) {
+//     this.locGlobal = locGlobal;
+// }

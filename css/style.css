@@ -40,27 +40,30 @@ li {
 
 .content .list {
   width: 40%;
+  min-width: 600px;
   margin: 2%;
 }
 
 .content .list .graph {
-  padding: 30px 0;
+  padding: 15px 0;
 }
 
 .content .list .graph > div {
   width: 100px;
   position: relative;
   margin: 0 auto;
-  transform: scale(1.4);
+  display: inline-block;
+  transform: scale(1.5);
 }
 
 .content .list .graph img {
   width: 100%;
+  vertical-align: middle;
 }
 
 .content .entering {
   width: 50%;
-  display: flex;
+  min-width: 700px;
   border: 1px solid #000;
   padding: 20px;
   position: fixed;
@@ -69,9 +72,25 @@ li {
   margin: 0;
 }
 
-.content .entering form {
-  width: 40%;
-  min-width: 300px;
+.content .entering form .line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.content .entering form .line-btn input,
+.content .entering form .line-btn a {
+  width: 120px;
+  height: 30px;
+  line-height: 30px;
+  margin: 0 10px;
+  padding: 0;
+  text-align: center;
+  border: none;
+  text-decoration: none;
+  color: #000;
+  background-color: #EBEBE4;
 }
 
 .content .entering form p,
@@ -91,6 +110,7 @@ li {
   margin-left: 10px;
   width: 200px;
   height: 30px;
+  line-height: 30px;
   border: 1px solid #000;
   outline: none;
   text-indent: 5px;
@@ -131,18 +151,17 @@ li {
 }
 
 .content .entering .commponent-wrap {
-  width: 60%;
   height: 400px;
   overflow-y: scroll;
 }
 
 .content .entering .commponent-wrap .all-c-wrap.active {
   display: inline-block;
+  transform: scale(3) translateX(30%) translateY(70%);
 }
 
 .content .entering .commponent-wrap .all-c-wrap.active .all-c {
-  display: inline-block;
-  transform: scale(3) translateX(20%) translateY(50%);
+  margin: auto;
 }
 
 table {
@@ -171,16 +190,12 @@ table tr {
 }
 
 #printContent {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 #printContent .list {
   width: 48%;
   margin: 1%;
-}
-
-#printContent .list .graph {
-  padding: 20px 0;
 }
 
 #printContent table thead tr {
@@ -197,4 +212,37 @@ table tr {
 
 #printContent table tbody tr {
   height: 50px;
+}
+
+@media screen and (max-width: 1700px) {
+  .content {
+    font-size: 16px;
+  }
+  .content .entering form input,
+  .content .entering form select,
+  .content .entering form #select {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .content {
+    font-size: 14px;
+  }
+  .content .entering form input,
+  .content .entering form select,
+  .content .entering form #select {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .content {
+    font-size: 12px;
+  }
+  .content .entering form input,
+  .content .entering form select,
+  .content .entering form #select {
+    font-size: 12px;
+  }
 }

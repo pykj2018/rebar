@@ -35,7 +35,7 @@ window.onload = function() {
 function addLink() {
     // var request = dbObject.db.transaction(dbObject.db_store_name, "readwrite").objectStore(dbObject.db_store_name).clear();
 
-    console.log(global)
+    // console.log(global)
 
     //获取数据(逐条)
     var orderNumber = global.orderNumber;
@@ -162,7 +162,6 @@ function showLinks() {
                     specSum = 0;
                     $('.list-left tbody').append(appendStr + appendStr2);
                 } else {
-
                     $('.list-left tbody').append(appendStr);
                 }
                 // if (i % 2 == 0) {

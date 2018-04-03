@@ -1,4 +1,5 @@
 var global = [];
+var global2 = [];
 var printGlobal;
 // var orderNumber = global.length;
 $(document).ready(function() {
@@ -6,7 +7,7 @@ $(document).ready(function() {
     // clearLink();
 
     // 测试命令，上线删除
-    $(".all-c input").val('456456');
+    $(".all-c input").val('2');
 
     // 图形选择显示逻辑
     $("#select").click(function() {
@@ -21,6 +22,7 @@ $(document).ready(function() {
 
     // 确定按钮
     $('.confirm').click(function() {
+
         // var strBranches = $(".entering p input[name=branches]").val();
         // var strActiveSize = $(".commponent-wrap .active input").size();
         // var strSelect = $("#select span").text();
@@ -49,25 +51,59 @@ $(document).ready(function() {
 
         // 存储数据，调用遍历
         global.push({
-            // 'orderNumber': $('input[name=orderNumber]').val(),
-            'orderNumber': '',
-            'diameter': $('select[name=diameter]').find("option:selected").text(),
-            'graphical': $('#select span').text(),
-            'length': $('input[name=length]').val(),
-            'branches': $('input[name=branches]').val(),
-            'detailsKey': keyArr(len), //图形内数值数组
-            'detailsValue': valArr(len), //图形内数值数组
-        })
+                // 'orderNumber': $('input[name=orderNumber]').val(),
+                'orderNumber': '',
+                'diameter': $('select[name=diameter]').find("option:selected").text(),
+                'graphical': $('#select span').text(),
+                'length': $('input[name=length]').val(),
+                'branches': $('input[name=branches]').val(),
+                'detailsKey': keyArr(len), //图形内数值数组
+                'detailsValue': valArr(len), //图形内数值数组
+                'weight': $('input[name=length]').val() * $('input[name=branches]').val()
+            })
+            // console.log(global);
 
         // 录入区序号值
         $('input[name=orderNumber]').val(global.length + 1);
 
         render();
-        addLink();
+        // addLink();
     })
 
 });
 
+// 渲染列表
+function render() {
+    $('.list tbody').empty();
+    var dotitem = ""; //图形数字细节DOM
+    var dotStr = ""; //图形数字细节DOM
+    for (var i = 0; i < global.length; i++) {
+
+        // 按照直径排序
+        // global.sort(up);
+
+        // 列表序号重新计算赋值
+        // if (global[i].orderNumber !== i + 1) {}
+        global[i].orderNumber = i + 1;
+
+        // 写入数值定位DOM input
+        for (var j = 0; j < global[i].detailsKey.length; j++) {
+            dotitem = "<input class='" + global[i].detailsKey[j] + "' type='text' disabled value='" + global[i].detailsValue[j] + "'>"
+            dotStr += dotitem;
+        }
+
+        // 拼接数据DOM
+        $('.list tbody').append("<tr><td class='orderNumber'>" + global[i].orderNumber +
+            "</td><td class = 'diameter'>" + global[i].diameter +
+            "</td><td class = 'graph'><div class='image'><img src='./images/" + global[i].graphical +
+            ".jpg'>" + dotStr + "</div></td><td class = 'length'>" + global[i].length +
+            "</td><td class = 'branches'>" + global[i].branches +
+            "</td><td class='del'><input type='button' value='删除' onclick = 'del($(this))' ></td></tr>");
+        dotitem = '';
+        dotStr = '';
+    }
+
+}
 // 计算开料长度方法
 function calculate(e) {
     var sum = 0; //input内总和
@@ -95,38 +131,86 @@ function valArr(e) {
     return valArr;
 }
 
-// 渲染列表
-function render() {
-    $('.list tbody').empty();
+$('.toprint').click(function() {
+
+    // 按照直径排序
+    global.sort(up);
+
+    var specSum = 0; //
+    var specItem; //
     var dotitem = ""; //图形数字细节DOM
     var dotStr = ""; //图形数字细节DOM
+    var insert;
+
+
+
     for (var i = 0; i < global.length; i++) {
-
-        // 按照直径排序
-        global.sort(up);
-
-        // 列表序号重新计算赋值
-        // if (global[i].orderNumber !== i + 1) {}
-        global[i].orderNumber = i + 1;
-
-        // 写入数值定位DOM input
         for (var j = 0; j < global[i].detailsKey.length; j++) {
             dotitem = "<input class='" + global[i].detailsKey[j] + "' type='text' disabled value='" + global[i].detailsValue[j] + "'>"
             dotStr += dotitem;
         }
 
-        // 拼接数据DOM
-        $('.list tbody').append("<tr><td class='orderNumber'>" + global[i].orderNumber +
-            "</td><td class = 'diameter'>" + global[i].diameter +
-            "</td><td class = 'graph'><div><img src='./images/" + global[i].graphical +
-            ".jpg'>" + dotStr + "</div></td><td class = 'length'>" + global[i].length +
-            "</td><td class = 'branches'>" + global[i].branches +
-            "</td><td class='del'><input type='button' value='删除' onclick = 'del($(this))' ></td></tr>");
-        dotitem = '';
-        dotStr = '';
-    }
+        var diameter1 = Number(global[i].diameter * 1);
+        var diameter2 = i + 1 < global.length ? Number(global[i + 1].diameter * 1) : '';
 
-}
+        switch (Number(diameter1)) {
+            case 6:
+                coefficient = 0.4;
+                break;
+            case 8:
+                coefficient = 0.45;
+                break;
+            case 10:
+                coefficient = 0.4; //特殊
+                break;
+            case 12:
+                coefficient = 0.888;
+                break;
+            case 14:
+                coefficient = 1.21;
+                break;
+            case 16:
+                coefficient = 1.58;
+                break;
+            case 18:
+                coefficient = 2;
+                break;
+            case 20:
+                coefficient = 2.47;
+                break;
+            case 22:
+                coefficient = 2.99;
+                break;
+            case 25:
+                coefficient = 3.86;
+                break;
+            default:
+                break;
+        }
+
+        specSum = (specSum + coefficient * global[i].weight) * 100 / 100;
+
+        if (diameter1 !== diameter2) {
+            console.log(i, diameter1, diameter2, specSum);
+            insert = {
+                'orderNumber': '',
+                'diameter': global[i].diameter,
+                'weight': global[i].weight,
+                'coefficient': coefficient,
+                'specSum': specSum
+            }
+            global2.push(insert); // 
+            specSum = 0;
+        }
+    }
+    window.localStorage.global = null;
+    window.localStorage.global = JSON.stringify(global.concat(global2).sort(up));
+    global2 = [];
+
+    // window.location.href = "./print.html";
+    window.open("./print.html");
+
+})
 
 //按升序排列
 function up(x, y) {

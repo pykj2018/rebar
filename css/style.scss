@@ -207,9 +207,26 @@ table {
                 width: 40%
             }
         }
+        th,
+        td {
+            border: 1px solid red;
+        }
         tbody tr {
             height: 50px;
         }
+    }
+}
+
+.topTitle {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 1%;
+    input {
+        border: none;
+        border-bottom: 1px solid red;
+        outline: none;
     }
 }
 

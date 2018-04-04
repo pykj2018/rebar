@@ -31,6 +31,10 @@
         #printContent .list .graph {
             padding: 5px 0;
         }
+        
+        #printContent table th {
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -39,6 +43,10 @@
         <input type="button" value="打印" onclick="m_print()">
     </div>
     <!--startprint-->
+    <div class="topTitle">
+        <div>页面地址：<input type="text"></div>
+        <div>时　　间：<input type="text"></div>
+    </div>
     <div id="printContent" class="content">
         <div class="list list-left">
             <table>

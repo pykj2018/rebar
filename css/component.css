@@ -43,7 +43,7 @@
     width: 30px;
     height: 8px;
     line-height: 8px;
-    font-size: 10px;
+    font-size: 8px;
     border: none;
     border-bottom: 1px solid red;
     -webkit-transform-origin-x: 0;
@@ -712,4 +712,19 @@
 .c26-i3 {
     top: 25px;
     left: 70px;
+}
+
+.c27-i1 {
+    top: 0;
+    left: 30px
+}
+
+.c28-i1 {
+    top: 0;
+    left: 30px
+}
+
+.c29-i1 {
+    top: 0;
+    left: 30px
 }

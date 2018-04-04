@@ -10,7 +10,7 @@ $(document).ready(function() {
     // clearLink();
 
     // 测试命令，上线删除
-    $(".all-c input").val('2');
+    // $(".all-c input").val('2');
 
     merge = false;
     // 图形选择显示逻辑
@@ -27,25 +27,25 @@ $(document).ready(function() {
     // 确定按钮
     $('.confirm').click(function() {
 
-        // var strBranches = $(".entering p input[name=branches]").val();
-        // var strActiveSize = $(".commponent-wrap .active input").size();
-        // var strSelect = $("#select span").text();
-        // var reg = /^[0-9]+.?[0-9]*$/;
-        // if (!reg.test(strSelect)) {
-        //     alert("请选择图形！");
-        //     return;
-        // }
-        // for (var i = 0; i < strActiveSize; i++) {
-        //     var strActiveVal = $(".commponent-wrap .active input").eq(i).val();
-        //     if (strActiveVal == null || strActiveVal == '') {
-        //         alert("请完整填写图形内数字！");
-        //         return;
-        //     }
-        // }
-        // if (strBranches == null || strBranches == '') {
-        //     alert("条数不能为空！");
-        //     return;
-        // }
+        var strBranches = $(".entering p input[name=branches]").val();
+        var strActiveSize = $(".commponent-wrap .active input").size();
+        var strSelect = $("#select span").text();
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if (!reg.test(strSelect)) {
+            alert("请选择图形！");
+            return;
+        }
+        for (var i = 0; i < strActiveSize; i++) {
+            var strActiveVal = $(".commponent-wrap .active input").eq(i).val();
+            if (strActiveVal == null || strActiveVal == '') {
+                alert("请完整填写图形内数字！");
+                return;
+            }
+        }
+        if (strBranches == null || strBranches == '') {
+            alert("条数不能为空！");
+            return;
+        }
 
         var len = $('.active input').size(); //input长度
 
@@ -58,7 +58,10 @@ $(document).ready(function() {
 
         function checkIndex(globalItem) {
             if (globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
-                globalItem.graphical == $('#select span').text() && globalItem.coefficient == Number($('input[name=magnitude]').val()) && globalItem.detailsValue.equals(valArr(len))) {
+                globalItem.graphical == $('#select span').text() &&
+                globalItem.detailsValue.equals(valArr(len))
+                // globalItem.diameter == 10 ? globalItem.coefficient == Number($('input[name=magnitude]').val()) : true
+            ) {
                 // console.log(globalItem.detailsValue,valArr(len));
                 // console.log(globalItem.detailsValue.equals(valArr(len)));
                 return globalItem;
@@ -115,7 +118,7 @@ $(document).ready(function() {
             'equal': equal
         })
 
-        console.log(global);
+        // console.log(global);
 
         // 录入区序号值
         $('input[name=orderNumber]').val(global.length + 1);
@@ -216,18 +219,19 @@ $('.merge').click(function() {
             endGlobal.push(deepCopyGlobal[i]);
         }
     }
-    console.table(endGlobal);
+    // console.table(global);
+    // console.table(endGlobal);
     // alert("合并完成！");
 })
 
 $('.toprint').click(function() {
     if (merge) {
-        console.log('endGlobal')
+        // console.log('endGlobal')
         window.localStorage.data = null;
         window.localStorage.data = JSON.stringify(endGlobal.sort(up));
         merge = false;
     } else {
-        console.log('global')
+        // console.log('global')
         window.localStorage.data = null;
         window.localStorage.data = JSON.stringify(global.sort(up));
     }

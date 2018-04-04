@@ -73,38 +73,92 @@
     window.onLoad = showList();
 
     function showList() {
-        var allData = JSON.parse(window.localStorage.global);
+        var allData = JSON.parse(window.localStorage.data);
         var appendStr = ""; //tbody内总DOM
         var dotitem = ""; //图形数字细节DOM
         var dotStr = ""; //图形数字细节DOM
 
+        var dataItem;
+        // var dotitem = ""; //图形数字细节DOM
+        // var dotStr = ""; //图形数字细节DOM
+        var insert;
+        var specSum = 0;
 
-        var completion = 0;
+        for (var i = 0; i < allData.length; i++) {
+
+            var diameter1 = Number(allData[i].diameter * 1);
+            var diameter2 = i + 1 < allData.length ? Number(allData[i + 1].diameter * 1) : '';
+            var coefficient1 = Number(allData[i].coefficient * 1);
+            var coefficient2 = i + 1 < allData.length ? Number(allData[i + 1].coefficient * 1) : ''
+
+            console.log(diameter1 !== diameter2)
+            console.log(!(coefficient1 == coefficient2))
+
+            specSum = (specSum + allData[i].weight) * 100 / 100;
+
+            if (diameter1 !== diameter2 || coefficient1 !== coefficient2) {
+                // console.log(i, diameter1, diameter2, specSum);
+                insert = {
+                    'orderNumber': '',
+                    'diameter': allData[i].diameter,
+                    'weight': allData[i].weight,
+                    'coefficient': allData[i].coefficient,
+                    'specSum': specSum
+                }
+                resultGlobal.push(insert);
+                specSum = 0;
+            }
+            // else if (diameter1 == diameter2 && coefficient1 !== coefficient2) {
+            //     insert = {
+            //         'orderNumber': '',
+            //         'diameter': allData[i].diameter,
+            //         'weight': allData[i].weight,
+            //         // 'coefficient': coefficient,
+            //         'specSum': specSum
+            //     }
+            //     resultGlobal.push(insert);
+            //     specSum = 0;
+            // }
+        }
+
+        // console.table(allData.concat(resultGlobal).sort(up));
+        // console.log(allData.concat(resultGlobal).sort(up).length);
+        dataItem = allData.concat(resultGlobal).sort(up);
+        console.log(dataItem)
+            // return;
+
+        var completion = 0; //页面数量计算，进一法
         completion = allData.length % 30 > 0 ? (parseInt(allData.length / 30) + 1) * 30 : (parseInt(allData.length / 30)) * 30;
-        console.log(completion);
+        // console.log(completion);
 
         for (var i = 0; i < completion; i++) {
-            if (i < allData.length) {
-                console.log(typeof(allData[i].orderNumber));
-                if (allData[i].orderNumber == '') {
-                    // 拼接数据DOM
-                    appendStr = "<tr class='sum'><td  class ='graph' colspan='4'><div><div class='image' style='z-index:-1'><img src='./images/0.jpg'></div><div>直径为" + allData[i].diameter + "的重量为" + allData[i].weight + "米*" + allData[i].coefficient + "公斤=" + allData[i].specSum + "公斤</div></div></td></tr>"
-                } else if (typeof(allData[i].orderNumber) == 'number') {
-                    for (var j = 0; j < allData[i].detailsKey.length; j++) {
-                        dotitem = "<input class='" + allData[i].detailsKey[j] + "' type='text' disabled value='" + allData[i].detailsValue[j] + "'>"
+            // 有数据部分
+            if (i < dataItem.length) {
+                // console.log(allData.length, resultGlobal.length)
+                if (dataItem[i].orderNumber == '') {
+                    // 拼接数据DOM--总和
+                    appendStr = "<tr class='sum'><td  class ='graph' colspan='4'><div><div class='image' style='z-index:-1'><img src='./images/0.jpg'></div><div>直径为" + dataItem[i].diameter + "的重量为" + dataItem[i].weight + "米*" + dataItem[i].coefficient + "公斤=" + dataItem[i].specSum + "公斤</div></div></td></tr>"
+                } else if (dataItem[i].orderNumber > 0) {
+                    for (var j = 0; j < dataItem[i].detailsKey.length; j++) {
+                        dotitem = "<input class='" + dataItem[i].detailsKey[j] + "' type='text' disabled value='" + dataItem[i].detailsValue[j] + "'>"
                         dotStr += dotitem;
                     }
-                    // 拼接数据DOM
-                    appendStr = "<tr><td class = 'diameter'>" + allData[i].diameter +
-                        "</td><td class = 'graph'><div class='image'><img src='./images/" + allData[i].graphical +
-                        ".jpg'>" + dotStr + "</div></td><td class = 'length'>" + allData[i].length +
-                        "</td><td class = 'branches'>" + allData[i].branches +
+                    // 拼接数据DOM--数据行
+                    appendStr = "<tr><td class = 'diameter'>" + dataItem[i].diameter +
+                        "</td><td class = 'graph'><div class='image'><img src='./images/" + dataItem[i].graphical +
+                        ".jpg'>" + dotStr + "</div></td><td class = 'length'>" + dataItem[i].length +
+                        "</td><td class = 'branches'>" + dataItem[i].branches +
                         "</td></tr>"
+                } else {
+                    appendStr = "<tr><td class = 'diameter'></td><td class = 'graph'><div class='image'><img src='./images/0.jpg'></div></td><td class = 'length'></td><td class = 'branches'></td></tr>"
                 }
-            } else {
+            }
+            //补充空格部分
+            else {
                 appendStr = "<tr><td class = 'diameter'></td><td class = 'graph'><div class='image'><img src='./images/0.jpg'></div></td><td class = 'length'></td><td class = 'branches'></td></tr>"
             }
 
+            //判断左/右渲染
             if ((parseInt(i / 15) + 2) % 2 == 0) {
                 $('.list-left tbody').append(appendStr);
             } else {

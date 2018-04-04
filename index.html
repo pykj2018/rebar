@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="./css/component.css">
     <script src="./js/plug/jquery.js"></script>
     <title>数据录入页</title>
+    <script>
+        $(document).ready(function() {
+            $('#mySelect').change(function() {
+                console.log($(this).find("option:selected").text())
+                if ($(this).find("option:selected").text() == 10) {
+                    $('input[name=magnitude]').removeAttr('disabled')
+                } else {
+                    $('input[name=magnitude]').val('');
+                    $('input[name=magnitude]').attr('disabled', true)
+                }
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -45,7 +58,7 @@
                 <div class="line">
                     <p><span>序　　号:</span> <input type="text" value="1" name="orderNumber" disabled/></p>
                     <p><span>直　　径:</span>
-                        <select name="diameter">
+                        <select name="diameter" id='mySelect'>
                                 <option value="">6</option>
                                 <option value="">8</option>
                                 <option value="">10</option>
@@ -73,8 +86,12 @@
                 </div>
                 <div class="line">
                     <p><span>条　　数:</span> <input type="number" name="branches" value="7" /></p>
+                    <p><span>特殊数值:</span> <input type="number" name="magnitude" value="" disabled/></p>
+                </div>
+                <div class="line">
                     <p class="line-btn">
                         <input type="button" value="确定" class="confirm">
+                        <input type="button" value="合并" class="merge">
                         <input type="button" value="生成打印页" class="toprint">
                         <!-- <a href="./print.html" target="blank">生成打印页</a> -->
                     </p>
@@ -366,11 +383,6 @@
 </body>
 <script src="./js/index.js"></script>
 <!-- <script src="./js/indexDB.js"></script> -->
-<script>
-    // function del() {
-    //     alert(0)
 
-    // }
-</script>
 
 </html>

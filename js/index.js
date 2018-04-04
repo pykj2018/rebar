@@ -1,6 +1,9 @@
 var global = [];
-var global2 = [];
-var printGlobal;
+var resultGlobal = []; //插入计算总和数组
+var deepCopyGlobal; //拷贝数组
+var endGlobal = []; //缓存数组
+var merge = false; //是否点击合并
+
 // var orderNumber = global.length;
 $(document).ready(function() {
     // // 页面加载完，清楚indexDB
@@ -9,6 +12,7 @@ $(document).ready(function() {
     // 测试命令，上线删除
     $(".all-c input").val('2');
 
+    merge = false;
     // 图形选择显示逻辑
     $("#select").click(function() {
         $(".all-c-wrap").toggleClass('on').removeClass('active').find('input').hide();
@@ -44,24 +48,74 @@ $(document).ready(function() {
         // }
 
         var len = $('.active input').size(); //input长度
+
         calculate(len); //调用计算开料长度
         keyArr(len); //调用input类名数组函数
         valArr(len); //调用input值数组函数
         // orderNumber++;
+        var equal = global.findIndex(checkIndex); //与现有数组中相同的第一项的index值
+        // console.log(global.findIndex(checkIndex));
+
+        function checkIndex(globalItem) {
+            if (globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
+                globalItem.graphical == $('#select span').text() && globalItem.coefficient == Number($('input[name=magnitude]').val()) && globalItem.detailsValue.equals(valArr(len))) {
+                // console.log(globalItem.detailsValue,valArr(len));
+                // console.log(globalItem.detailsValue.equals(valArr(len)));
+                return globalItem;
+            }
+        }
+
+        switch (Number($('select[name=diameter]').find("option:selected").text())) {
+            case 6:
+                coefficient = 0.4;
+                break;
+            case 8:
+                coefficient = 0.45;
+                break;
+            case 10:
+                coefficient = Number($('input[name=magnitude]').val()) > 0 ? Number($('input[name=magnitude]').val()) : 0; //特殊
+                break;
+            case 12:
+                coefficient = 0.888;
+                break;
+            case 14:
+                coefficient = 1.21;
+                break;
+            case 16:
+                coefficient = 1.58;
+                break;
+            case 18:
+                coefficient = 2;
+                break;
+            case 20:
+                coefficient = 2.47;
+                break;
+            case 22:
+                coefficient = 2.99;
+                break;
+            case 25:
+                coefficient = 3.86;
+                break;
+            default:
+                break;
+        }
 
         // 存储数据，调用遍历
         global.push({
-                // 'orderNumber': $('input[name=orderNumber]').val(),
-                'orderNumber': '',
-                'diameter': $('select[name=diameter]').find("option:selected").text(),
-                'graphical': $('#select span').text(),
-                'length': $('input[name=length]').val(),
-                'branches': $('input[name=branches]').val(),
-                'detailsKey': keyArr(len), //图形内数值数组
-                'detailsValue': valArr(len), //图形内数值数组
-                'weight': $('input[name=length]').val() * $('input[name=branches]').val()
-            })
-            // console.log(global);
+            // 'orderNumber': $('input[name=orderNumber]').val(),
+            'orderNumber': '',
+            'diameter': Number($('select[name=diameter]').find("option:selected").text()),
+            'graphical': Number($('#select span').text()),
+            'length': Number($('input[name=length]').val()),
+            'branches': Number($('input[name=branches]').val()),
+            'coefficient': coefficient,
+            'detailsKey': keyArr(len), //图形内数值数组
+            'detailsValue': valArr(len), //图形内数值数组
+            'weight': Math.round($('input[name=length]').val() * $('input[name=branches]').val() * coefficient) * 100 / 100,
+            'equal': equal
+        })
+
+        console.log(global);
 
         // 录入区序号值
         $('input[name=orderNumber]').val(global.length + 1);
@@ -71,6 +125,27 @@ $(document).ready(function() {
     })
 
 });
+
+
+if (Array.prototype.equals)
+    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+Array.prototype.equals = function(array) {
+    if (!array)
+        return false;
+    if (this.length != array.length)
+        return false;
+    for (var i = 0, l = this.length; i < l; i++) {
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            if (!this[i].equals(array[i]))
+                return false;
+        } else if (this[i] != array[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+Object.defineProperty(Array.prototype, "equals", { enumerable: false });
 
 // 渲染列表
 function render() {
@@ -130,84 +205,38 @@ function valArr(e) {
     }
     return valArr;
 }
-
-$('.toprint').click(function() {
-
-    // 按照直径排序
-    global.sort(up);
-
-    var specSum = 0; //
-    var specItem; //
-    var dotitem = ""; //图形数字细节DOM
-    var dotStr = ""; //图形数字细节DOM
-    var insert;
-
-
-
+$('.merge').click(function() {
+    endGlobal = [];
+    merge = true;
+    deepCopyGlobal = JSON.parse(JSON.stringify(global)); //深度拷贝
     for (var i = 0; i < global.length; i++) {
-        for (var j = 0; j < global[i].detailsKey.length; j++) {
-            dotitem = "<input class='" + global[i].detailsKey[j] + "' type='text' disabled value='" + global[i].detailsValue[j] + "'>"
-            dotStr += dotitem;
-        }
-
-        var diameter1 = Number(global[i].diameter * 1);
-        var diameter2 = i + 1 < global.length ? Number(global[i + 1].diameter * 1) : '';
-
-        switch (Number(diameter1)) {
-            case 6:
-                coefficient = 0.4;
-                break;
-            case 8:
-                coefficient = 0.45;
-                break;
-            case 10:
-                coefficient = 0.4; //特殊
-                break;
-            case 12:
-                coefficient = 0.888;
-                break;
-            case 14:
-                coefficient = 1.21;
-                break;
-            case 16:
-                coefficient = 1.58;
-                break;
-            case 18:
-                coefficient = 2;
-                break;
-            case 20:
-                coefficient = 2.47;
-                break;
-            case 22:
-                coefficient = 2.99;
-                break;
-            case 25:
-                coefficient = 3.86;
-                break;
-            default:
-                break;
-        }
-
-        specSum = (specSum + coefficient * global[i].weight) * 100 / 100;
-
-        if (diameter1 !== diameter2) {
-            console.log(i, diameter1, diameter2, specSum);
-            insert = {
-                'orderNumber': '',
-                'diameter': global[i].diameter,
-                'weight': global[i].weight,
-                'coefficient': coefficient,
-                'specSum': specSum
-            }
-            global2.push(insert); // 
-            specSum = 0;
+        if (deepCopyGlobal[i].equal !== -1) {
+            deepCopyGlobal[deepCopyGlobal[i].equal].branches += deepCopyGlobal[i].branches;
+        } else if (deepCopyGlobal[i].equal == -1) {
+            endGlobal.push(deepCopyGlobal[i]);
         }
     }
-    window.localStorage.global = null;
-    window.localStorage.global = JSON.stringify(global.concat(global2).sort(up));
-    global2 = [];
+    console.table(endGlobal);
+    // alert("合并完成！");
+})
 
-    // window.location.href = "./print.html";
+$('.toprint').click(function() {
+    if (merge) {
+        console.log('endGlobal')
+        window.localStorage.data = null;
+        window.localStorage.data = JSON.stringify(endGlobal.sort(up));
+        merge = false;
+    } else {
+        console.log('global')
+        window.localStorage.data = null;
+        window.localStorage.data = JSON.stringify(global.sort(up));
+    }
+
+    //数据存入缓存，并清空结果数组
+    // window.localStorage.data = null;
+    // window.localStorage.data = JSON.stringify(global);
+    resultGlobal = [];
+
     window.open("./print.html");
 
 })

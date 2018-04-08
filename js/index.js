@@ -10,7 +10,7 @@ $(document).ready(function() {
     // clearLink();
 
     // 测试命令，上线删除
-    // $(".all-c input").val('2');
+    $(".all-c input").val('3.14');
 
     merge = false;
     // 图形选择显示逻辑
@@ -46,24 +46,37 @@ $(document).ready(function() {
             alert("条数不能为空！");
             return;
         }
+        if (Number($('select[name=diameter]').find("option:selected").text()) == 10) {
+            if ($('input[name=magnitude]').val() == null || $('input[name=magnitude]').val() == '') {
+                alert("请填写直径10的重量系数特殊数值！");
+                return;
+            }
+        }
 
         var len = $('.active input').size(); //input长度
 
         calculate(len); //调用计算开料长度
         keyArr(len); //调用input类名数组函数
         valArr(len); //调用input值数组函数
-        // orderNumber++;
         var equal = global.findIndex(checkIndex); //与现有数组中相同的第一项的index值
         // console.log(global.findIndex(checkIndex));
 
         function checkIndex(globalItem) {
             if (globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
                 globalItem.graphical == $('#select span').text() &&
-                globalItem.detailsValue.equals(valArr(len))
+                globalItem.detailsValue.equals(valArr(len)) && globalItem.diameter !== 10
                 // globalItem.diameter == 10 ? globalItem.coefficient == Number($('input[name=magnitude]').val()) : true
             ) {
                 // console.log(globalItem.detailsValue,valArr(len));
                 // console.log(globalItem.detailsValue.equals(valArr(len)));
+                return globalItem;
+            } else if (
+                globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
+                globalItem.graphical == $('#select span').text() &&
+                globalItem.detailsValue.equals(valArr(len)) &&
+                globalItem.diameter == 10 &&
+                globalItem.coefficient == Number($('input[name=magnitude]').val())
+            ) {
                 return globalItem;
             }
         }
@@ -252,30 +265,35 @@ function valArr(e) {
     }
     return valArr;
 }
-$('.merge').click(function() {
+// $('.merge').click(function() {
+function merges() {
     endGlobal = [];
     merge = true;
     deepCopyGlobal = JSON.parse(JSON.stringify(global)); //深度拷贝
     for (var i = 0; i < global.length; i++) {
         if (deepCopyGlobal[i].equal !== -1) {
             deepCopyGlobal[deepCopyGlobal[i].equal].branches += deepCopyGlobal[i].branches;
+            // deepCopyGlobal[deepCopyGlobal[i].equal].weight = accMul(deepCopyGlobal[i].branches, deepCopyGlobal[deepCopyGlobal[i].equal].branches);
+            console.log(deepCopyGlobal[i].weight, deepCopyGlobal[deepCopyGlobal[i].equal].branches)
         } else if (deepCopyGlobal[i].equal == -1) {
             endGlobal.push(deepCopyGlobal[i]);
         }
     }
-    // console.table(global);
-    // console.table(endGlobal);
-    alert("合并完成！");
-})
+    for (var i = 0; i < endGlobal.length; i++) {
+        endGlobal[i].weight = accMul(endGlobal[i].branches, endGlobal[i].weight);
+    }
+    console.table(deepCopyGlobal);
+    console.table(endGlobal);
+    // alert("合并完成！");
+}
 
 $('.toprint').click(function() {
-    if (merge) {
-        // console.log('endGlobal')
+    merges();
+    if (merge) { //合并数据
         window.localStorage.data = null;
         window.localStorage.data = JSON.stringify(endGlobal.sort(up));
         merge = false;
-    } else {
-        // console.log('global')
+    } else { //未合并数据
         window.localStorage.data = null;
         window.localStorage.data = JSON.stringify(global.sort(up));
     }
@@ -289,9 +307,18 @@ $('.toprint').click(function() {
 
 })
 
+
 //按升序排列
 function up(x, y) {
     return x.diameter - y.diameter
+}
+
+function ups(x, y) {
+    if (x.diameter == y.diameter) {
+        return x.coefficient - y.coefficient
+    } else {
+        return x.diameter - y.diameter
+    }
 }
 
 //按降序排列

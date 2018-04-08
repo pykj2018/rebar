@@ -101,11 +101,11 @@
 
             // console.log(diameter1 !== diameter2)
             // console.log(!(coefficient1 == coefficient2))
-            console.log(allData[i].weight)
+            // console.log(allData[i].weight)
 
             specSum = accAdd(specSum, allData[i].weight);
 
-            if (diameter1 !== diameter2 || coefficient1 !== coefficient2) {
+            if (diameter1 !== diameter2) { //直径不相同
                 // console.log(i, diameter1, diameter2, specSum);
                 insert = {
                     'orderNumber': '',
@@ -116,25 +116,27 @@
                 }
                 resultGlobal.push(insert);
                 specSum = 0;
+            } else {
+                if (coefficient1 !== coefficient2) {
+                    insert = {
+                        'orderNumber': '',
+                        'diameter': allData[i].diameter,
+                        'weight': allData[i].weight,
+                        'coefficient': coefficient1,
+                        'specSum': specSum
+                    }
+                    resultGlobal.push(insert);
+                    specSum = 0;
+                }
             }
-            // else if (diameter1 == diameter2 && coefficient1 !== coefficient2) {
-            //     insert = {
-            //         'orderNumber': '',
-            //         'diameter': allData[i].diameter,
-            //         'weight': allData[i].weight,
-            //         // 'coefficient': coefficient,
-            //         'specSum': specSum
-            //     }
-            //     resultGlobal.push(insert);
-            //     specSum = 0;
-            // }
         }
+
+        // console.table(resultGlobal);
 
         // console.table(allData.concat(resultGlobal).sort(up));
         // console.log(allData.concat(resultGlobal).sort(up).length);
-        dataItem = allData.concat(resultGlobal).sort(up);
-        // console.log(dataItem)
-        // return;
+        dataItem = allData.concat(resultGlobal).sort(ups);
+        console.table(dataItem)
 
         var completion = 0; //页面数量计算，进一法
         completion = allData.length % 30 > 0 ? (parseInt(allData.length / 30) + 1) * 30 : (parseInt(allData.length / 30)) * 30;
@@ -146,8 +148,12 @@
                 // console.log(allData.length, resultGlobal.length)
                 if (dataItem[i].orderNumber == '') {
                     // 拼接数据DOM--总和
-                    console.log(dataItem[i])
-                    appendStr = "<tr class='sum'><td  class ='graph' colspan='4'><div><div class='image' style='z-index:-1'><img src='./images/0.jpg'></div><div>直径为" + dataItem[i].diameter + "的重量为:" + Math.round(dataItem[i].specSum / dataItem[i].coefficient * 100) / 100 + "米*" + dataItem[i].coefficient + "公斤=" + dataItem[i].specSum + "公斤</div></div></td></tr>"
+                    // console.log(dataItem[i])
+                    appendStr = "<tr class='sum'><td  class ='graph' colspan='4'><div>" +
+                        "<div class='image' style='z-index:-1'><img src='./images/0.jpg'></div>" +
+                        "<div>直径为" + dataItem[i].diameter + "的重量为:" +
+                        Math.round(dataItem[i].specSum / dataItem[i].coefficient * 100) / 100 + "米*" +
+                        dataItem[i].coefficient + "公斤=" + dataItem[i].specSum + "公斤</div></div></td></tr>"
                 } else if (dataItem[i].orderNumber > 0) {
                     for (var j = 0; j < dataItem[i].detailsKey.length; j++) {
                         dotitem = "<input class='" + dataItem[i].detailsKey[j] + "' type='text' disabled value='" + dataItem[i].detailsValue[j] + "'>"

@@ -315,7 +315,11 @@ function up(x, y) {
 
 function ups(x, y) {
     if (x.diameter == y.diameter) {
-        return x.coefficient - y.coefficient
+        if (x.coefficient == y.coefficient) {
+            return (x.equal ? x.equal : 0) - (y.equal ? y.equal : 0)
+        } else {
+            return x.coefficient - y.coefficient
+        }
     } else {
         return x.diameter - y.diameter
     }

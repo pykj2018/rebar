@@ -31,6 +31,10 @@ li {
   display: flex;
 }
 
+body {
+  min-width: 1000px;
+}
+
 .content {
   width: 100%;
   display: flex;
@@ -62,7 +66,7 @@ li {
 }
 
 .content .entering {
-  width: 50%;
+  width: 40%;
   min-width: 700px;
   border: 1px solid #000;
   padding: 20px;
@@ -246,6 +250,23 @@ table tr {
   justify-content: center;
 }
 
+@media screen and (min-width: 1450px) {
+  .content .entering {
+    width: 40%;
+    min-width: 700px;
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  .content .entering {
+    width: 30%;
+    min-width: 320px;
+  }
+  .content .entering .line {
+    display: block !important;
+  }
+}
+
 @media screen and (max-width: 1700px) {
   .content {
     font-size: 16px;
@@ -257,7 +278,7 @@ table tr {
   }
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1450px) {
   .content {
     font-size: 14px;
   }

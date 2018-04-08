@@ -114,7 +114,7 @@ $(document).ready(function() {
             'coefficient': coefficient,
             'detailsKey': keyArr(len), //图形内数值数组
             'detailsValue': valArr(len), //图形内数值数组
-            'weight': Math.round($('input[name=length]').val() * $('input[name=branches]').val() * coefficient) * 100 / 100,
+            'weight': accMul(accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), coefficient),
             'equal': equal
         })
 
@@ -186,9 +186,53 @@ function render() {
 function calculate(e) {
     var sum = 0; //input内总和
     for (var i = 0; i < e; i++) {
-        sum += (Number($('.active input').eq(i).val()) * 100) / 100;
+        // sum += (Math.floor($('.active input').eq(i).val()) * 100) / 100;
+        sum = accAdd(sum, $('.active input').eq(i).val());
     }
     $('input[name=length]').val(sum);
+}
+
+function accAdd(arg1, arg2) {
+    var r1, r2, m, c;
+    try {
+        r1 = arg1.toString().split(".")[1].length;
+    } catch (e) {
+        r1 = 0;
+    }
+    try {
+        r2 = arg2.toString().split(".")[1].length;
+    } catch (e) {
+        r2 = 0;
+    }
+    c = Math.abs(r1 - r2);
+    m = Math.pow(10, Math.max(r1, r2));
+    if (c > 0) {
+        var cm = Math.pow(10, c);
+        if (r1 > r2) {
+            arg1 = Number(arg1.toString().replace(".", ""));
+            arg2 = Number(arg2.toString().replace(".", "")) * cm;
+        } else {
+            arg1 = Number(arg1.toString().replace(".", "")) * cm;
+            arg2 = Number(arg2.toString().replace(".", ""));
+        }
+    } else {
+        arg1 = Number(arg1.toString().replace(".", ""));
+        arg2 = Number(arg2.toString().replace(".", ""));
+    }
+    return (arg1 + arg2) / m;
+}
+
+function accMul(arg1, arg2) {
+    var m = 0,
+        s1 = arg1.toString(),
+        s2 = arg2.toString();
+    try {
+        m += s1.split(".")[1].length;
+    } catch (e) {}
+    try {
+        m += s2.split(".")[1].length;
+    } catch (e) {}
+    return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 }
 
 //key值数组
@@ -221,7 +265,7 @@ $('.merge').click(function() {
     }
     // console.table(global);
     // console.table(endGlobal);
-    // alert("合并完成！");
+    alert("合并完成！");
 })
 
 $('.toprint').click(function() {

@@ -82,15 +82,14 @@
 
     function showList() {
         var allData = JSON.parse(window.localStorage.data);
-        var appendStr = ""; //tbody内总DOM
+        var appendStr = ""; //渲染插入
         var dotitem = ""; //图形数字细节DOM
         var dotStr = ""; //图形数字细节DOM
 
-        var dataItem;
-        // var dotitem = ""; //图形数字细节DOM
-        // var dotStr = ""; //图形数字细节DOM
-        var insert;
-        var specSum = 0;
+        var dataItem; //缓存数据+插入数据
+        var insert; //插入数据变量
+        var weightSum = 0; //重量和
+        var ingredientSum = 0; //开料和
 
         for (var i = 0; i < allData.length; i++) {
 
@@ -99,61 +98,54 @@
             var coefficient1 = Number(allData[i].coefficient * 1);
             var coefficient2 = i + 1 < allData.length ? Number(allData[i + 1].coefficient * 1) : ''
 
-            // console.log(diameter1 !== diameter2)
-            // console.log(!(coefficient1 == coefficient2))
-            // console.log(allData[i].weight)
-
-            specSum = accAdd(specSum, allData[i].weight);
+            weightSum = accAdd(weightSum, allData[i].weight);
+            ingredientSum = accAdd(ingredientSum, allData[i].ingredient);
 
             if (diameter1 !== diameter2) { //直径不相同
-                // console.log(i, diameter1, diameter2, specSum);
+                // console.log(i, diameter1, diameter2, weightSum,ingredientSum);
                 insert = {
                     'orderNumber': '',
                     'diameter': allData[i].diameter,
-                    // 'oLength': allData[i].weight,
                     'coefficient': allData[i].coefficient,
-                    'specSum': specSum
+                    'ingredientSum': ingredientSum,
+                    'weightSum': weightSum
                 }
                 resultGlobal.push(insert);
-                specSum = 0;
+                ingredientSum = 0;
+                weightSum = 0;
             } else {
                 if (coefficient1 !== coefficient2) {
                     insert = {
                         'orderNumber': '',
                         'diameter': allData[i].diameter,
-                        // 'weight': allData[i].weight,
                         'coefficient': coefficient1,
-                        'specSum': specSum
+                        'ingredientSum': ingredientSum,
+                        'weightSum': weightSum
                     }
                     resultGlobal.push(insert);
-                    specSum = 0;
+                    ingredientSum = 0;
+                    weightSum = 0;
                 }
             }
         }
 
-        // console.table(resultGlobal);
-
-        // console.table(allData.concat(resultGlobal).sort(up));
-        // console.log(allData.concat(resultGlobal).sort(up).length);
         dataItem = allData.concat(resultGlobal).sort(ups);
-        console.table(dataItem)
 
         var completion = 0; //页面数量计算，进一法
         completion = allData.length % 30 > 0 ? (parseInt(allData.length / 30) + 1) * 30 : (parseInt(allData.length / 30)) * 30;
-        // console.log(completion);
 
         for (var i = 0; i < completion; i++) {
             // 有数据部分
             if (i < dataItem.length) {
-                // console.log(allData.length, resultGlobal.length)
                 if (dataItem[i].orderNumber == '') {
                     // 拼接数据DOM--总和
                     // console.log(dataItem[i])
                     appendStr = "<tr class='sum'><td  class ='graph' colspan='4'><div>" +
                         "<div class='image' style='z-index:-1'><img src='./images/0.jpg'></div>" +
                         "<div>直径为" + dataItem[i].diameter + "的重量为:" +
-                        Math.round(dataItem[i].specSum / dataItem[i].coefficient * 100) / 100 + "米*" +
-                        dataItem[i].coefficient + "公斤=" + dataItem[i].specSum + "公斤</div></div></td></tr>"
+                        // Math.round(dataItem[i].weightSum / dataItem[i].coefficient * 100) / 100 + "米*" +
+                        dataItem[i].ingredientSum + "米*" +
+                        dataItem[i].coefficient + "公斤=" + dataItem[i].weightSum + "公斤</div></div></td></tr>"
                 } else if (dataItem[i].orderNumber > 0) {
                     for (var j = 0; j < dataItem[i].detailsKey.length; j++) {
                         dotitem = "<input class='" + dataItem[i].detailsKey[j] + "' type='text' disabled value='" + dataItem[i].detailsValue[j] + "'>"
@@ -183,12 +175,6 @@
             dotitem = '';
             dotStr = '';
         }
-
-        // var oHeight = $(".list tbody tr").height() + 30;
-        // $(".sum").css({
-        //     height: oHeight + 'px'
-        // })
-
     }
 </script>
 

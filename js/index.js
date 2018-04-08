@@ -4,15 +4,13 @@ var deepCopyGlobal; //拷贝数组
 var endGlobal = []; //缓存数组
 var merge = false; //是否点击合并
 
-// var orderNumber = global.length;
 $(document).ready(function() {
-    // // 页面加载完，清楚indexDB
-    // clearLink();
 
     // 测试命令，上线删除
-    $(".all-c input").val('3.14');
+    // $(".all-c input").val('3.14');
 
-    merge = false;
+    merge = false; //合并开关
+
     // 图形选择显示逻辑
     $("#select").click(function() {
         $(".all-c-wrap").toggleClass('on').removeClass('active').find('input').hide();
@@ -26,11 +24,12 @@ $(document).ready(function() {
 
     // 确定按钮
     $('.confirm').click(function() {
-
         var strBranches = $(".entering p input[name=branches]").val();
         var strActiveSize = $(".commponent-wrap .active input").size();
         var strSelect = $("#select span").text();
         var reg = /^[0-9]+.?[0-9]*$/;
+
+        //验证表单填写
         if (!reg.test(strSelect)) {
             alert("请选择图形！");
             return;
@@ -59,16 +58,12 @@ $(document).ready(function() {
         keyArr(len); //调用input类名数组函数
         valArr(len); //调用input值数组函数
         var equal = global.findIndex(checkIndex); //与现有数组中相同的第一项的index值
-        // console.log(global.findIndex(checkIndex));
 
         function checkIndex(globalItem) {
             if (globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
                 globalItem.graphical == $('#select span').text() &&
                 globalItem.detailsValue.equals(valArr(len)) && globalItem.diameter !== 10
-                // globalItem.diameter == 10 ? globalItem.coefficient == Number($('input[name=magnitude]').val()) : true
             ) {
-                // console.log(globalItem.detailsValue,valArr(len));
-                // console.log(globalItem.detailsValue.equals(valArr(len)));
                 return globalItem;
             } else if (
                 globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
@@ -121,13 +116,14 @@ $(document).ready(function() {
             // 'orderNumber': $('input[name=orderNumber]').val(),
             'orderNumber': '',
             'diameter': Number($('select[name=diameter]').find("option:selected").text()),
+            'coefficient': coefficient,
             'graphical': Number($('#select span').text()),
             'length': Number($('input[name=length]').val()),
             'branches': Number($('input[name=branches]').val()),
-            'coefficient': coefficient,
             'detailsKey': keyArr(len), //图形内数值数组
             'detailsValue': valArr(len), //图形内数值数组
-            'weight': accMul(accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), coefficient),
+            'ingredient': accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), //用料长度
+            'weight': accMul(accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), coefficient), //单项用料长度*系数
             'equal': equal
         })
 
@@ -137,31 +133,24 @@ $(document).ready(function() {
         $('input[name=orderNumber]').val(global.length + 1);
 
         render();
-        // addLink();
     })
 
 });
 
-
-if (Array.prototype.equals)
-    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
-Array.prototype.equals = function(array) {
-    if (!array)
-        return false;
-    if (this.length != array.length)
-        return false;
-    for (var i = 0, l = this.length; i < l; i++) {
-        if (this[i] instanceof Array && array[i] instanceof Array) {
-            if (!this[i].equals(array[i]))
-                return false;
-        } else if (this[i] != array[i]) {
-            return false;
-        }
+$('.toprint').click(function() {
+    merges();
+    if (merge) { //合并数据
+        window.localStorage.data = null;
+        window.localStorage.data = JSON.stringify(endGlobal.sort(up));
+        merge = false;
+    } else { //未合并数据
+        window.localStorage.data = null;
+        window.localStorage.data = JSON.stringify(global.sort(up));
     }
-    return true;
-}
 
-Object.defineProperty(Array.prototype, "equals", { enumerable: false });
+    window.open("./print.html");
+
+})
 
 // 渲染列表
 function render() {
@@ -169,9 +158,6 @@ function render() {
     var dotitem = ""; //图形数字细节DOM
     var dotStr = ""; //图形数字细节DOM
     for (var i = 0; i < global.length; i++) {
-
-        // 按照直径排序
-        // global.sort(up);
 
         // 列表序号重新计算赋值
         // if (global[i].orderNumber !== i + 1) {}
@@ -205,6 +191,7 @@ function calculate(e) {
     $('input[name=length]').val(sum);
 }
 
+// 加法去浮点
 function accAdd(arg1, arg2) {
     var r1, r2, m, c;
     try {
@@ -235,6 +222,7 @@ function accAdd(arg1, arg2) {
     return (arg1 + arg2) / m;
 }
 
+//乘法去浮点
 function accMul(arg1, arg2) {
     var m = 0,
         s1 = arg1.toString(),
@@ -247,6 +235,26 @@ function accMul(arg1, arg2) {
     } catch (e) {}
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 }
+
+// array原型添加equals方法，对比数组中的每一项是否相等
+if (Array.prototype.equals)
+    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+Array.prototype.equals = function(array) {
+    if (!array)
+        return false;
+    if (this.length != array.length)
+        return false;
+    for (var i = 0, l = this.length; i < l; i++) {
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            if (!this[i].equals(array[i]))
+                return false;
+        } else if (this[i] != array[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+Object.defineProperty(Array.prototype, "equals", { enumerable: false });
 
 //key值数组
 function keyArr(e) {
@@ -265,6 +273,7 @@ function valArr(e) {
     }
     return valArr;
 }
+
 // $('.merge').click(function() {
 function merges() {
     endGlobal = [];
@@ -273,39 +282,19 @@ function merges() {
     for (var i = 0; i < global.length; i++) {
         if (deepCopyGlobal[i].equal !== -1) {
             deepCopyGlobal[deepCopyGlobal[i].equal].branches += deepCopyGlobal[i].branches;
-            // deepCopyGlobal[deepCopyGlobal[i].equal].weight = accMul(deepCopyGlobal[i].branches, deepCopyGlobal[deepCopyGlobal[i].equal].branches);
-            console.log(deepCopyGlobal[i].weight, deepCopyGlobal[deepCopyGlobal[i].equal].branches)
         } else if (deepCopyGlobal[i].equal == -1) {
             endGlobal.push(deepCopyGlobal[i]);
         }
     }
     for (var i = 0; i < endGlobal.length; i++) {
         endGlobal[i].weight = accMul(endGlobal[i].branches, endGlobal[i].weight);
+        endGlobal[i].ingredient = accMul(endGlobal[i].branches, endGlobal[i].ingredient);
     }
-    console.table(deepCopyGlobal);
-    console.table(endGlobal);
+    // console.table(deepCopyGlobal);
+    // console.table(endGlobal);
     // alert("合并完成！");
+    return;
 }
-
-$('.toprint').click(function() {
-    merges();
-    if (merge) { //合并数据
-        window.localStorage.data = null;
-        window.localStorage.data = JSON.stringify(endGlobal.sort(up));
-        merge = false;
-    } else { //未合并数据
-        window.localStorage.data = null;
-        window.localStorage.data = JSON.stringify(global.sort(up));
-    }
-
-    //数据存入缓存，并清空结果数组
-    // window.localStorage.data = null;
-    // window.localStorage.data = JSON.stringify(global);
-    resultGlobal = [];
-
-    window.open("./print.html");
-
-})
 
 
 //按升序排列

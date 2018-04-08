@@ -12,7 +12,6 @@
     <script>
         $(document).ready(function() {
             $('#mySelect').change(function() {
-                console.log($(this).find("option:selected").text())
                 if ($(this).find("option:selected").text() == 10) {
                     $('input[name=magnitude]').removeAttr('disabled')
                 } else {

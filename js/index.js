@@ -7,7 +7,7 @@ var merge = false; //是否点击合并
 $(document).ready(function() {
 
     // 测试命令，上线删除
-    // $(".all-c input").val('3.14');
+    $(".all-c input").val('3.1415');
 
     merge = false; //合并开关
 
@@ -127,7 +127,7 @@ $(document).ready(function() {
             'equal': equal
         })
 
-        // console.log(global);
+        console.log(global);
 
         // 录入区序号值
         $('input[name=orderNumber]').val(global.length + 1);
@@ -288,7 +288,7 @@ function merges() {
     }
     for (var i = 0; i < endGlobal.length; i++) {
         endGlobal[i].weight = accMul(endGlobal[i].branches, endGlobal[i].weight);
-        endGlobal[i].ingredient = accMul(endGlobal[i].branches, endGlobal[i].ingredient);
+        endGlobal[i].ingredient = endGlobal[i].ingredient;
     }
     // console.table(deepCopyGlobal);
     // console.table(endGlobal);

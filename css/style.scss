@@ -52,14 +52,15 @@ body {
             // border: none;
             // margin: 40px auto;
             // transform: scale(2);
-            padding: 15px 0;
+            // padding: 15px 0;
             .image {
-                width: 100px;
+                width: 180px;
+                // width: 100px;
                 // height: 25px;
                 position: relative;
                 margin: 0 auto;
                 display: inline-block;
-                transform: scale(1.5);
+                // transform: scaleX(1.8) scaleY(1.5);
             }
             img {
                 width: 100%;
@@ -159,7 +160,7 @@ body {
             overflow-y: scroll;
             .all-c-wrap.active {
                 display: inline-block;
-                transform: scale(3) translateX(30%) translateY(70%);
+                transform: scale(2) translateX(50%) translateY(50%);
                 .all-c {
                     margin: auto;
                     // display: inline-block;

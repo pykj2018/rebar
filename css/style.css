@@ -48,16 +48,11 @@ body {
   margin: 2%;
 }
 
-.content .list .graph {
-  padding: 15px 0;
-}
-
 .content .list .graph .image {
-  width: 100px;
+  width: 180px;
   position: relative;
   margin: 0 auto;
   display: inline-block;
-  transform: scale(1.5);
 }
 
 .content .list .graph img {
@@ -161,7 +156,7 @@ body {
 
 .content .entering .commponent-wrap .all-c-wrap.active {
   display: inline-block;
-  transform: scale(3) translateX(30%) translateY(70%);
+  transform: scale(2) translateX(50%) translateY(50%);
 }
 
 .content .entering .commponent-wrap .all-c-wrap.active .all-c {

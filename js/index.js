@@ -45,12 +45,12 @@ $(document).ready(function() {
             alert("条数不能为空！");
             return;
         }
-        if (Number($('select[name=diameter]').find("option:selected").text()) == 10) {
-            if ($('input[name=magnitude]').val() == null || $('input[name=magnitude]').val() == '') {
-                alert("请填写直径10的重量系数特殊数值！");
-                return;
-            }
-        }
+        // if (Number($('select[name=diameter]').find("option:selected").text()) == 10) {
+        //     if ($('input[name=magnitude]').val() == null || $('input[name=magnitude]').val() == '') {
+        //         alert("请填写直径10的重量系数特殊数值！");
+        //         return;
+        //     }
+        // }
 
         var len = $('.active input').size(); //input长度
 
@@ -62,18 +62,19 @@ $(document).ready(function() {
         function checkIndex(globalItem) {
             if (globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
                 globalItem.graphical == $('#select span').text() &&
-                globalItem.detailsValue.equals(valArr(len)) && globalItem.diameter !== 10
-            ) {
-                return globalItem;
-            } else if (
-                globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
-                globalItem.graphical == $('#select span').text() &&
-                globalItem.detailsValue.equals(valArr(len)) &&
-                globalItem.diameter == 10 &&
-                globalItem.coefficient == Number($('input[name=magnitude]').val())
+                globalItem.detailsValue.equals(valArr(len))
             ) {
                 return globalItem;
             }
+            // else if (
+            //     globalItem.diameter == $('select[name=diameter]').find("option:selected").text() &&
+            //     globalItem.graphical == $('#select span').text() &&
+            //     globalItem.detailsValue.equals(valArr(len)) &&
+            //     globalItem.diameter == 10 &&
+            //     globalItem.coefficient == Number($('input[name=magnitude]').val())
+            // ) {
+            //     return globalItem;
+            // }
         }
 
         switch (Number($('select[name=diameter]').find("option:selected").text())) {
@@ -84,7 +85,7 @@ $(document).ready(function() {
                 coefficient = 0.45;
                 break;
             case 10:
-                coefficient = Number($('input[name=magnitude]').val()) > 0 ? Number($('input[name=magnitude]').val()) : 0; //特殊
+                coefficient = 0.617; //特殊
                 break;
             case 12:
                 coefficient = 0.888;
@@ -302,12 +303,16 @@ function up(x, y) {
     return x.diameter - y.diameter
 }
 
-function ups(x, y) {
+function upss(x, y) {
     if (x.diameter == y.diameter) {
-        if (x.coefficient == y.coefficient) {
+        if (x.ingredient == y.ingredient) {
+            // if (x.coefficient == y.coefficient) {
             return (x.equal ? x.equal : 0) - (y.equal ? y.equal : 0)
+                // } else {
+                // return x.coefficient - y.coefficient
+                // }
         } else {
-            return x.coefficient - y.coefficient
+            return (x.ingredient ? x.ingredient : 10e10) - (y.ingredient ? y.ingredient : 10e10)
         }
     } else {
         return x.diameter - y.diameter

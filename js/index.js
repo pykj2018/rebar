@@ -2,14 +2,14 @@ var global = [];
 var resultGlobal = []; //插入计算总和数组
 var deepCopyGlobal; //拷贝数组
 var endGlobal = []; //缓存数组
-var merge = false; //是否点击合并
+// var merge = false; //是否点击合并
 
 $(document).ready(function() {
 
     // 测试命令，上线删除
-    $(".all-c input").val('3.1415');
+    $(".all-c input").val('2');
 
-    merge = false; //合并开关
+    // merge = false; //合并开关
 
     // 图形选择显示逻辑
     $("#select").click(function() {
@@ -116,14 +116,14 @@ $(document).ready(function() {
         global.push({
             // 'orderNumber': $('input[name=orderNumber]').val(),
             'orderNumber': '',
-            'diameter': Number($('select[name=diameter]').find("option:selected").text()),
-            'coefficient': coefficient,
-            'graphical': Number($('#select span').text()),
-            'length': Number($('input[name=length]').val()),
-            'branches': Number($('input[name=branches]').val()),
+            'diameter': Number($('select[name=diameter]').find("option:selected").text()), //直径
+            'coefficient': coefficient, //系数
+            'graphical': Number($('#select span').text()), //图形
+            'length': Number($('input[name=length]').val()), //开料长度
+            'branches': Number($('input[name=branches]').val()), //条数
             'detailsKey': keyArr(len), //图形内数值数组
             'detailsValue': valArr(len), //图形内数值数组
-            'ingredient': accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), //用料长度
+            'ingredient': accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), //用料长度*条数
             'weight': accMul(accMul(Number($('input[name=length]').val()), Number($('input[name=branches]').val())), coefficient), //单项用料长度*系数
             'equal': equal
         })
@@ -140,14 +140,14 @@ $(document).ready(function() {
 
 $('.toprint').click(function() {
     merges();
-    if (merge) { //合并数据
-        window.localStorage.data = null;
-        window.localStorage.data = JSON.stringify(endGlobal.sort(up));
-        merge = false;
-    } else { //未合并数据
-        window.localStorage.data = null;
-        window.localStorage.data = JSON.stringify(global.sort(up));
-    }
+    // if (merge) { //合并数据
+    window.localStorage.data = null;
+    window.localStorage.data = JSON.stringify(endGlobal.sort(up));
+    // merge = false;
+    // } else { //未合并数据
+    // window.localStorage.data = null;
+    // window.localStorage.data = JSON.stringify(global.sort(up));
+    // }
 
     window.open("./print.html");
 
@@ -278,7 +278,7 @@ function valArr(e) {
 // $('.merge').click(function() {
 function merges() {
     endGlobal = [];
-    merge = true;
+    // merge = true;
     deepCopyGlobal = JSON.parse(JSON.stringify(global)); //深度拷贝
     for (var i = 0; i < global.length; i++) {
         if (deepCopyGlobal[i].equal !== -1) {
@@ -288,8 +288,8 @@ function merges() {
         }
     }
     for (var i = 0; i < endGlobal.length; i++) {
-        endGlobal[i].weight = accMul(endGlobal[i].branches, endGlobal[i].weight);
-        endGlobal[i].ingredient = endGlobal[i].ingredient;
+        endGlobal[i].weight = accMul(accMul(endGlobal[i].branches, endGlobal[i].length), endGlobal[i].coefficient);
+        endGlobal[i].ingredient = accMul(endGlobal[i].branches, endGlobal[i].length);
     }
     // console.table(deepCopyGlobal);
     // console.table(endGlobal);

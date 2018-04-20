@@ -25,15 +25,15 @@
         }
         
         .graph>div input {
-            font-size: 18px;
+            /* font-size: 18px; */
         }
         
         #printContent .list .graph {
-            padding: 5px 0;
+            padding: 2px 0;
         }
         
         #printContent table th {
-            font-size: 12px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -129,12 +129,12 @@
             }
         }
 
-        dataItem = allData.concat(resultGlobal).sort(upss);
+        dataItem = allData.concat(resultGlobal).sort(ups);
         console.table(dataItem);
 
         var completion = 0; //页面数量计算，进一法
         var pageTdNum = 26 //每页行数量
-        completion = allData.length % pageTdNum > 0 ? (parseInt(allData.length / pageTdNum) + 1) * pageTdNum : (parseInt(allData.length / pageTdNum)) * pageTdNum;
+        completion = dataItem.length % pageTdNum > 0 ? (parseInt(dataItem.length / pageTdNum) + 1) * pageTdNum + parseInt(dataItem.length / pageTdNum) * 2 : (parseInt(dataItem.length / pageTdNum)) * pageTdNum;
 
         for (var i = 0; i < completion; i++) {
             // 有数据部分
@@ -157,8 +157,7 @@
                     appendStr = "<tr><td class = 'diameter'>" + dataItem[i].diameter +
                         "</td><td class = 'graph'><div class='image'><img src='./images/" + dataItem[i].graphical +
                         ".jpg'>" + dotStr + "</div></td><td class = 'length'>" + dataItem[i].length +
-                        "</td><td class = 'branches'>" + dataItem[i].branches +
-                        "</td></tr>"
+                        "</td><td class = 'branches'>" + dataItem[i].branches + "</td></tr>"
                 } else {
                     appendStr = "<tr><td class = 'diameter'></td><td class = 'graph'><div class='image'><img src='./images/0.jpg'></div></td><td class = 'length'></td><td class = 'branches'></td></tr>"
                 }
@@ -169,11 +168,20 @@
             }
 
             //判断左/右渲染
-            if ((parseInt(i / 13) + 2) % 2 == 0) {
-                $('.list-left tbody').append(appendStr);
-            } else {
-                $('.list-right tbody').append(appendStr);
+            if (i < pageTdNum) { //判断是否为第一页
+                if (parseInt(i / pageTdNum * 2) % 2 == 0) {
+                    $('.list-left tbody').append(appendStr);
+                } else {
+                    $('.list-right tbody').append(appendStr);
+                }
+            } else { //第二页以后，每页多渲染两行，i-pageTdNum 减去首页数量 重新计算半页数量 判断左右渲染
+                if (parseInt((i - pageTdNum) / (pageTdNum + 2) * 2) % 2 == 0) {
+                    $('.list-left tbody').append(appendStr);
+                } else {
+                    $('.list-right tbody').append(appendStr);
+                }
             }
+
             dotitem = '';
             dotStr = '';
         }

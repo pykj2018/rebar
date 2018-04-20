@@ -176,38 +176,35 @@ table td {
   border-collapse: collapse;
 }
 
-table th {
-  width: 12%;
-}
-
-table th:nth-child(3) {
-  width: 40%;
-}
-
 table tr {
   height: 50px;
 }
 
 #printContent {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 #printContent .list {
-  width: 48%;
+  width: 49%;
   min-width: 0;
-  margin: 1%;
+  margin: 0.5%;
 }
 
-#printContent table thead tr {
-  height: 30px;
+#printContent table {
+  table-layout: fixed;
 }
 
 #printContent table th {
-  width: 12%;
+  width: 10%;
+  max-width: 15%;
 }
 
 #printContent table th:nth-child(2) {
-  width: 40%;
+  width: 58%;
+}
+
+#printContent table th:nth-child(3) {
+  width: 22%;
 }
 
 #printContent table th,
@@ -243,6 +240,7 @@ table tr {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
 }
 
 @media screen and (min-width: 1450px) {

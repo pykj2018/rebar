@@ -7,7 +7,7 @@ var endGlobal = []; //缓存数组
 $(document).ready(function() {
 
     // 测试命令，上线删除
-    $(".all-c input").val('2');
+    $(".all-c input").val('65789');
 
     // merge = false; //合并开关
 
@@ -303,7 +303,7 @@ function up(x, y) {
     return x.diameter - y.diameter
 }
 
-function upss(x, y) {
+function ups(x, y) {
     if (x.diameter == y.diameter) {
         if (x.ingredient == y.ingredient) {
             // if (x.coefficient == y.coefficient) {
@@ -312,7 +312,7 @@ function upss(x, y) {
                 // return x.coefficient - y.coefficient
                 // }
         } else {
-            return (x.ingredient ? x.ingredient : 10e10) - (y.ingredient ? y.ingredient : 10e10)
+            return (x.ingredient ? x.ingredient : 10e100) - (y.ingredient ? y.ingredient : 10e100)
         }
     } else {
         return x.diameter - y.diameter

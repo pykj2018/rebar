@@ -184,32 +184,34 @@ table {
         border: 1px solid #000;
         border-collapse: collapse;
     }
-    th {
-        width: 12%;
-        &:nth-child(3) {
-            width: 40%
-        }
-    }
+    // th {
+    //     width: 12%;
+    //     &:nth-child(3) {
+    //         width: 40%
+    //     }
+    // }
     tr {
         height: 50px;
     }
 }
 
 #printContent {
-    font-size: 14px;
+    font-size: 18px;
     .list {
-        width: 48%;
+        width: 49%;
         min-width: 0;
-        margin: 1%;
+        margin: 0.5%;
     }
     table {
-        thead tr {
-            height: 30px;
-        }
+        table-layout: fixed;
         th {
-            width: 12%;
+            width: 10%;
+            max-width: 15%;
             &:nth-child(2) {
-                width: 40%
+                width: 58%
+            }
+            &:nth-child(3) {
+                width: 22%
             }
         }
         th,
@@ -245,6 +247,7 @@ table {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 18px;
 }
 
 @media screen and (min-width: 1450px) {
